@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 from tslearn.clustering import TimeSeriesKMeans
 from tslearn.utils import to_time_series_dataset
 import plotly.express as px
+import plotly.graph_objects as go
 from PIL import Image
 import datetime
 
@@ -19,6 +20,8 @@ df_historico = pd.read_csv('./data/df_model.csv', index_col=['Unnamed: 0', 'Unna
 
 # dataset para normalização dos dados
 df_pre_normal = pd.read_csv('./data/df_pre_normal.csv', index_col=['Unnamed: 0', 'Unnamed: 1'])
+
+base = pd.read_csv('./data/h_consolidado.csv')
 
 # 3 - CONSTRUÇÃO DE FUNÇÕES PARA CLUSTERIZAÇÃO DE DADOS
 # -------------------------------------------------
@@ -122,6 +125,24 @@ def main():
     # plotando gráfico de barras representando o tamanho dos clusters
     fig_1 = px.histogram(dados, x='cluster', color_discrete_sequence=['#838A08'])
     st.plotly_chart(fig_1, theme="streamlit", use_container_width=True)
+
+    # gráfigo preços ativos
+
+    with st.expander("See explanation"):
+
+      ativo = st.multiselect("Tipo de Ativo (conf. sufixo numérico)", options=variacoes.index)
+
+      ff = base[base.cod_negociacao.isin(ativo)]
+
+      fig_2 = go.Figure(data=[go.Candlestick(x=ff['data_pregao'],
+                      open=ff['preco_abertura'],
+                      high=ff['preco_maximo'],
+                      low=ff['preco_minimo'],
+                      close=ff['preco_ultimo_negocio'])])
+
+      fig_2.update_layout(xaxis_rangeslider_visible=False)
+      fig_2.update_traces(increasing_line_color='#b58900', decreasing_line_color='#e83e8c')
+      st.plotly_chart(fig_2, theme="streamlit", use_container_width=True)
 
     # preparativos para a plotagem dos dataframes
     lista_tabs = ['Cluster 0', 'Cluster 1', 'Cluster 2', 'Cluster 3', 'Cluster 4', 'Cluster 5', 'Cluster 6', 'Cluster 7', 'Cluster 8'  ]
