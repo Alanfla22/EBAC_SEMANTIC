@@ -16,12 +16,12 @@ import datetime
 # -------------------------------------------------
 
 # dataset do histórico dos preços dos ativos
-df_historico = pd.read_csv('./data/df_model.csv', index_col=['Unnamed: 0', 'Unnamed: 1'])
+df_historico = pd.read_csv('./data/output/df_model.csv', index_col=['Unnamed: 0', 'Unnamed: 1'])
 
 # dataset para normalização dos dados
-df_pre_normal = pd.read_csv('./data/df_pre_normal.csv', index_col=['Unnamed: 0', 'Unnamed: 1'])
+df_pre_normal = pd.read_csv('./data/output/df_pre_normal.csv', index_col=['Unnamed: 0', 'Unnamed: 1'])
 
-base = pd.read_csv('./data/h_consolidado.csv')
+base = pd.read_csv('./data/output/h_consolidado.csv')
 
 # 3 - CONSTRUÇÃO DE FUNÇÕES PARA CLUSTERIZAÇÃO DE DADOS
 # -------------------------------------------------
